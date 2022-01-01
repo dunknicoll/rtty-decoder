@@ -3,8 +3,9 @@
   let context;
   let audio;
   let drawCanvas = false;
+  let hearAudio = true;
   let canvas;
-  let canvasCtx;
+  $: canvasCtx = canvas && canvas.getContext("2d");
   let player;
   let dataArray;
   let bufferLength;
@@ -16,6 +17,18 @@
   let data = [];
   let message = [];
   $: messageData = message.join("");
+
+  $: {
+    if (analyser && hearAudio) {
+      analyser.connect(context.destination);
+    } else if (analyser && !hearAudio) {
+      try {
+        analyser.disconnect(context.destination);
+      } catch (e) {
+        console.log("audio not playing yet");
+      }
+    }
+  }
 
   const letters = {
     "00000": "\0",
@@ -188,19 +201,20 @@
       id="player"
       bind:this={player}
       src="http://internet-tty.net:8040/EUROPE"
-      crossorigin="anonymous"
-      controls>
+      crossorigin="anonymous">
       <track kind="captions" />
     </audio>
   </div>
   {#if drawCanvas}
     <div>
-      <canvas id="thing" width="500" height="200" />
+      <canvas bind:this={canvas} width="500" height="200" />
     </div>
   {/if}
   <div>
     <input type="checkbox" bind:checked={drawCanvas} />
     Draw Canvas
+    <input type="checkbox" bind:checked={hearAudio} />
+    Hear Audio
     <p>Message: {messageData}</p>
   </div>
 
