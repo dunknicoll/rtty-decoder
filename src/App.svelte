@@ -10,8 +10,6 @@
   let dataArray;
   let bufferLength;
   let analyser;
-  let gainNode;
-  let biquadFilter;
   let WIDTH = 500;
   let HEIGHT = 200;
   let data = [];
@@ -165,15 +163,10 @@
     );
 
     bufferLength = analyser.frequencyBinCount;
-    console.log(bufferLength, "length");
     dataArray = new Uint8Array(bufferLength);
     analyser.getByteTimeDomainData(dataArray);
 
-    gainNode = context.createGain();
-
     source.connect(analyser);
-
-    // analyser.connect(context.destination); // <--- uncomment this if you want to hear it
 
     if (drawCanvas) {
       canvas = document.getElementById("thing");
