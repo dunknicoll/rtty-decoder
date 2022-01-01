@@ -96,8 +96,6 @@
   const MARK = 118; // i cant actually remember how i arrived at these values so they *may* be wrong
   const SPACE = 134;
 
-  let currentLetter = [];
-
   function draw() {
     requestAnimationFrame(draw);
 
@@ -185,18 +183,25 @@
   {#if !start}
     <button class="startButton" on:click={handleClicked}>Start</button>
   {/if}
-
-  <audio
-    id="player"
-    bind:this={player}
-    src="http://internet-tty.net:8040/EUROPE"
-    crossorigin="anonymous"
-    controls>
-    <track kind="captions" />
-  </audio>
+  <div>
+    <audio
+      id="player"
+      bind:this={player}
+      src="http://internet-tty.net:8040/EUROPE"
+      crossorigin="anonymous"
+      controls>
+      <track kind="captions" />
+    </audio>
+  </div>
   {#if drawCanvas}
-    <canvas id="thing" width="500" height="200" />
+    <div>
+      <canvas id="thing" width="500" height="200" />
+    </div>
   {/if}
-  <p>Message: {messageData}</p>
+  <div>
+    <input type="checkbox" bind:checked={drawCanvas} />
+    Draw Canvas
+    <p>Message: {messageData}</p>
+  </div>
 
 </main>
